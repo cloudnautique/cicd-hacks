@@ -1,0 +1,14 @@
+FROM rancher/dind:v0.3.0
+
+MAINTAINER "engineering@rancher.com"
+
+RUN apt-get update && apt-get install -y openssh-server
+RUN apt-get install -y --no-install-recommends openjdk-7-jdk
+
+RUN mkdir -p /var/run/sshd
+RUN useradd -m -d /var/lib/jenkins jenkins
+ADD ./jenkins.pub /var/lib/jenkins/.ssh/authorized_keys
+ENV RANCHER_NETWORK true
+EXPOSE 22
+
+CMD [ "/usr/sbin/sshd", "-D" ]
