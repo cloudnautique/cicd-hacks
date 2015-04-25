@@ -7,7 +7,10 @@ RUN apt-get install -y --no-install-recommends openjdk-7-jdk
 
 RUN mkdir -p /var/run/sshd
 RUN useradd -m -d /var/lib/jenkins jenkins
-ADD ./jenkins.pub /var/lib/jenkins/.ssh/authorized_keys
+ADD ./jenkins_insecure.pub /var/lib/jenkins/.ssh/authorized_keys
+RUN chown -R jenkins:jenkins /var/lib/jenkins/.ssh && \
+    chmod 600 /var/lib/jenkins/.ssh/authorized_keys
+    
 ENV RANCHER_NETWORK true
 EXPOSE 22
 
